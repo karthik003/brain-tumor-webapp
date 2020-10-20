@@ -46,15 +46,14 @@ def upload_file():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-
-        data, filename = validate_file(request)
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+    if request.method=="POST":
+        name = request.form["name"]
+       
         file = request.files['file']
-        print(file.filename)
+        if file and allowed_file(file.filename):
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
         image_detect('./static/'+str(file.filename))
-        return render_template('prediction.html')
+        return render_template('prediction.html',name=name)
 
 
     

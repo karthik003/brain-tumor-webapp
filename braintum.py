@@ -40,10 +40,10 @@ def image_detect(filename):
     plt.show()
   img= cv2.imread(filename)
   gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-  ShowImage('Brain MRI',gray,'gray')
+  #ShowImage('Brain MRI',gray,'gray')
 
   ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_OTSU)
-  ShowImage('Thresholding image',thresh,'gray')
+  #ShowImage('Thresholding image',thresh,'gray')
 
   ret, markers = cv2.connectedComponents(thresh)
 
@@ -63,12 +63,12 @@ def image_detect(filename):
   ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
   #canny-edge-detection
   auto=auto_canny(thresh)
-  cv2.imshow("canny",auto)
+  #cv2.imshow("canny",auto)
   cv2.waitKey(0)
   resu=auto+thresh
-  cv2.imshow("res=canny+thresh",resu)
+  #cv2.imshow("res=canny+thresh",resu)
   cv2.waitKey(0)
-  cv2.imshow("invert res",cv2.bitwise_not(resu))
+  #cv2.imshow("invert res",cv2.bitwise_not(resu))
   cv2.waitKey(0)
   # noise removal
   kernel = np.ones((3,3),np.uint8)
@@ -99,11 +99,12 @@ def image_detect(filename):
 
   im1 = cv2.cvtColor(img,cv2.COLOR_HSV2RGB)
   ShowImage('Watershed segmented image',im1,'gray')
+  cv2.imwrite('./static/watershed.jpg', im1, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
   brain_mask = np.uint8(brain_mask)
   kernel = np.ones((8,8),np.uint8)
   closing = cv2.morphologyEx(brain_mask, cv2.MORPH_CLOSE, kernel)
-  ShowImage('Closing', closing, 'gray')
+  #ShowImage('Closing', closing, 'gray')
 
   brain_out = img.copy()
   #In a copy of the original image, clear those pixels that don't correspond to the brain
